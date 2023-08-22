@@ -16,7 +16,8 @@ public class AppBd {
         carregarDriverJDBC();
         try (var conn = getConnection()){
             listarEstados(conn);
-            localizarEstado(conn, "PR");    
+            localizarEstado(conn, "PR");
+            listarDadosTabela(conn, "cliente");    
         } catch (SQLException e) {
             // TODO: handle exception
         }
@@ -24,7 +25,33 @@ public class AppBd {
         
     }
 
-   private void localizarEstado(Connection conn, String uf) {
+  private void listarDadosTabela(Connection conn, String nomeTabela) {
+    var sql = "select * from "+ nomeTabela;
+    
+    try {
+
+        var statement = conn.createStatement();
+        var result = statement.executeQuery(sql);
+        var metadata = result.getMetaData();
+        int cols = metadata.getColumnCount();
+
+    for (int i = 1; i <= cols; i++) {
+        System.out.printf("%-25s |", metadata.getColumnName(i));
+    }
+    System.out.println();
+    while (result.next()) {
+        for (int i = 1; i <= cols; i++) {
+            System.out.printf("%-25s |", result.getString(i));
+        }
+        System.out.println();
+    }
+    } catch (SQLException e) {
+        // TODO Auto-generated catch block
+        System.err.println("Erro ao tentar executar consulta SQL: "+ e.getMessage());
+    }   
+    
+    }
+ private void localizarEstado(Connection conn, String uf) {
         try {
             var sql = "select * from estado where uf = ?";
             var statement = conn.prepareStatement(sql);
@@ -34,7 +61,7 @@ public class AppBd {
                 System.out.printf("Id: %d Nome: %s Uf: %s\n", result.getInt("id"), result.getString("nome"), result.getString("uf"));
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            System.out.println("Erro ao tentar executar consulta SQL");
+            System.err.println("Erro ao tentar executar consulta SQL");
         }
     }
 
