@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DAO {
-    private Connection conn;
+    protected Connection conn;
 
     public DAO(Connection conn) {
         this.conn = conn;
@@ -31,7 +31,6 @@ public class DAO {
             System.out.println();
         }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             System.err.println("Erro ao tentar executar consulta SQL: "+ e.getMessage());
         }   
         

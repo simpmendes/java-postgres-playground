@@ -2,6 +2,12 @@ package com.example.model;
 
 public class Estado {
     private Long id;
+    private String nome;
+    private String uf;
+    private RegiaoGeografica regiao;
+    private int areaKm2;
+    private int populacao;
+
     public Long getId() {
         return id;
     }
@@ -38,9 +44,8 @@ public class Estado {
     public void setPopulacao(int populacao) {
         this.populacao = populacao;
     }
-    private String nome;
-    private String uf;
-    private RegiaoGeografica regiao;
-    private int areaKm2;
-    private int populacao;
+
+    public String toString(){
+        return "Estado: "+ nome + "Id: " + id + " UF: "+ uf;
+    }
 }

@@ -2,29 +2,31 @@ package com.example.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
-public class EstadoDAO {
+import com.example.model.Estado;
+
+public class EstadoDAO extends DAO {
     private Connection conn;
 
     public EstadoDAO(Connection conn){
-        this.conn = conn;
+        super(conn);
     }
 
-    public void listar() {
-        
-        try {
-            
-            
+    public List<Estado> listar() throws SQLException {
+        var lista = new LinkedList<Estado>();
+      
             var statement = conn.createStatement();
             var result = statement.executeQuery("select * from estado");
             while(result.next()){
-                System.out.printf("Id: %d Nome: %s Uf: %s\n", result.getInt("id"), result.getString("nome"), result.getString("uf"));
+                var estado = new Estado();
+                estado.setId(result.getLong("id"));
+                estado.setNome(result.getString("nome")); 
+                estado.setNome(result.getString("uf"));
+                lista.add(estado);
             }
-            }
-         catch (SQLException e) {
-            // TODO Auto-generated catch block
-                System.err.println("Não foi possível conectar ao banco de dados: "+ e.getMessage());
-        }
+        return lista;
     }
 
     public void localizar(String uf) {
@@ -36,7 +38,6 @@ public class EstadoDAO {
             if(result.next())
                 System.out.printf("Id: %d Nome: %s Uf: %s\n", result.getInt("id"), result.getString("nome"), result.getString("uf"));
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             System.err.println("Erro ao tentar executar consulta SQL");
         }
     }

@@ -5,11 +5,11 @@ import java.sql.SQLException;
 
 import com.example.model.Produto;
 
-public class ProdutoDAO {
-    private Connection conn;
+public class ProdutoDAO extends DAO{
+    
 
     public ProdutoDAO(Connection conn) {
-        this.conn = conn;
+        super(conn);    
     }
 
     public void excluir(long id) {
@@ -20,7 +20,6 @@ public class ProdutoDAO {
                 System.out.println("Produto excluído com sucesso");
             }else System.out.println("Produto não localizado");
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             System.err.println("Erro a excluir o Produto- "+ e.getMessage());
         }
         
@@ -33,7 +32,6 @@ public class ProdutoDAO {
             statement.setDouble(3, produto.getValor());
             statement.executeUpdate();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             System.err.println("Erro ao tentar executar consulta SQL: "+ e.getMessage());
         };
         }
@@ -47,7 +45,6 @@ public class ProdutoDAO {
                 statement.setLong(4, produto.getId());
                 statement.executeUpdate();
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 System.err.println("Erro na alteração do Produto: "+ e.getMessage());
             };
             }
